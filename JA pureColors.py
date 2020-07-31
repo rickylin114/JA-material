@@ -1,59 +1,37 @@
 import cv2
 import numpy as np
 import pandas as pd
-import random
 
-
+df= pd.read_csv("D:/桌面/JA Material/JA-material/data base/MQdata.csv")
 refPt = []
-Serial=[]
 PtBGR=[]
-r1=[]
-r2=[]
-r3=[]
-r4=[]
-r5=[]
-img=cv2.imread('104432 河源0.jpg',1)
-h, w = img.shape[:2]
+
 #n= int(input("輸入取樣點數:"))
 
 
 def CircleCallback(event,x,y,flags,param):
-    c=0
-    global refPt,PtBGR,w,h,Serial,r,r2,r3,r4,r5
+    n=8
+    global refPt,PtBGR
     if event == cv2.EVENT_LBUTTONDOWN:
-        n=100
-        for c in range(0,n):
-            c+=1
-            N="104432 河源0"
-            ranx=(random.randint(0,99))
-            rany=(random.randint(0,99))
-            refPt.append((ranx,rany))
-            Serial.append(N)
-            r1.append()
-            r2.append()
-            r3.append()
-            b, g, r = img[ranx,rany]
-            PtBGR.append((b,g,r))             
+            refPt.append((x, y))
+            b, g, r = img[x,y]
+            PtBGR.append((b,g,r))
+            #print(refPt[0:n])
             #print(PtBGR[0:n])
             b=[x[0] for x in PtBGR]
             g=[x[1] for x in PtBGR]
             r=[x[2] for x in PtBGR]
-            if len(refPt)==n:
-                #print(refPt[0:c])
-                df = pd.DataFrame(list(zip(Serial,r,g,b)),
-                                  columns=['Serial no','R','G','B'])
-                print(df)
-                #df.to_csv('D:/桌面/JA Material/JA-material/data base/實驗板data.csv',index=False)
-                BAvr=(round(sum(b[0:c])/c))
-                GAvr=(round(sum(g[0:c])/c))
-                RAvr=(round(sum(r[0:c])/c))
+            cv2.circle(img,(x,y),5,(76,201,255),2)
+            if len(refPt)==8:
+                BAvr=(round(sum(b[0:n])/n))
+                GAvr=(round(sum(g[0:n])/n))
+                RAvr=(round(sum(r[0:n])/n))
                 print((RAvr,GAvr,BAvr))
-                Sum=BAvr+GAvr+RAvr
-                break
-                '''
+                Avr=round((BAvr+GAvr+RAvr)/3)
                 color(BAvr,GAvr,RAvr,Avr)
-                match(BAvr,GAvr,RAvr,Avr)
-                    
+                #match(BAvr,GAvr,RAvr,Avr)
+
+                
 def color(BAvr,GAvr,RAvr,Avr):
         if abs(BAvr-GAvr)<=1 and abs(BAvr-RAvr)<=1:
               print('White')
@@ -85,7 +63,7 @@ def color(BAvr,GAvr,RAvr,Avr):
 
                elif RAvr-GAvr<5:
                       print('Yellow')
-                      color.white()
+                     
                else:
                       print('Purple')
 
@@ -95,7 +73,7 @@ def color(BAvr,GAvr,RAvr,Avr):
               print(GAvr)
               print('White')
 
-
+'''
 def match(BAvr,GAvr,RAvr,Avr):
     
        df['Rdef']=(abs (RAvr-df['R']))
@@ -111,12 +89,12 @@ def match(BAvr,GAvr,RAvr,Avr):
        Newdf4=df.sort_values('SumDef')
        print(Newdf4.head(1))
        df1=df.loc[df['color']== 'white']
-
+'''
 #cv2.namedWindow('image')
 #cv2.setMouseCallback('image', average_bgr)
             
-'''
-
+img=cv2.imread('MQ236.jpg',1)
+print(img.dtype)
 cv2.namedWindow('mouse_callback')
 
 # bind the callback function to window

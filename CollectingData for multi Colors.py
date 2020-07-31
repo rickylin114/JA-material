@@ -7,31 +7,23 @@ import random
 refPt = []
 Serial=[]
 PtBGR=[]
-r1=[]
-r2=[]
-r3=[]
-r4=[]
-r5=[]
-img=cv2.imread('104432 河源0.jpg',1)
+img=cv2.imread('1MQ719jpg',1)
 h, w = img.shape[:2]
 #n= int(input("輸入取樣點數:"))
 
 
 def CircleCallback(event,x,y,flags,param):
     c=0
-    global refPt,PtBGR,w,h,Serial,r,r2,r3,r4,r5
+    global refPt,PtBGR,w,h,Serial
     if event == cv2.EVENT_LBUTTONDOWN:
-        n=100
+        n=1000
         for c in range(0,n):
             c+=1
-            N="104432 河源0"
-            ranx=(random.randint(0,99))
-            rany=(random.randint(0,99))
+            N="MQ719"
+            ranx=(random.randint(0,999))
+            rany=(random.randint(0,999))
             refPt.append((ranx,rany))
             Serial.append(N)
-            r1.append()
-            r2.append()
-            r3.append()
             b, g, r = img[ranx,rany]
             PtBGR.append((b,g,r))             
             #print(PtBGR[0:n])
@@ -40,16 +32,15 @@ def CircleCallback(event,x,y,flags,param):
             r=[x[2] for x in PtBGR]
             if len(refPt)==n:
                 #print(refPt[0:c])
-                df = pd.DataFrame(list(zip(Serial,r,g,b)),
-                                  columns=['Serial no','R','G','B'])
+                df = pd.DataFrame(list(zip(Serial,r,g,b)),columns=['Serial no','R','G','B'])
                 print(df)
-                #df.to_csv('D:/桌面/JA Material/JA-material/data base/實驗板data.csv',index=False)
+                df.to_csv('D:/桌面/JA Material/JA-material/data base/MQdata大板.csv',mode='a', header=False,index=False)
                 BAvr=(round(sum(b[0:c])/c))
                 GAvr=(round(sum(g[0:c])/c))
                 RAvr=(round(sum(r[0:c])/c))
                 print((RAvr,GAvr,BAvr))
                 Sum=BAvr+GAvr+RAvr
-                break
+                
                 '''
                 color(BAvr,GAvr,RAvr,Avr)
                 match(BAvr,GAvr,RAvr,Avr)
