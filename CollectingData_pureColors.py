@@ -62,7 +62,7 @@ def CircleCallback(event,x,y,flags,param):
                                             '70-120比例%','325比例%','砂粉產地','樹酯比例%','色粉種類','色粉比例%(樹酯)',
                                             '偶聯劑%(樹酯)','促進劑%(樹酯)','固化劑%(樹酯)','顏色'])
                 print(df)
-                df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorBig.csv',index=False, mode='a', header=False,encoding="utf_8_sig")
+                #df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorBig.csv',index=False, mode='a', header=False,encoding="utf_8_sig")
                 '''
                 match(b,g,r,Avr)
                 df = pd.DataFrame(list(zip(Serial,r,g,b)),
@@ -70,6 +70,7 @@ def CircleCallback(event,x,y,flags,param):
                                   '''
                                   
 def color_def(b,g,r,Avr):
+    
         global color
         if abs(int(b)-int(g))<=1 and abs(int(b)-int(r))<=1:
               color='White'
@@ -119,29 +120,7 @@ def color_def(b,g,r,Avr):
 
         else:
               color='White'
-              print(color)
-
-'''
-def match(b,g,r,Avr):
-    
-       df['Rdef']=(abs (r-df['R']))
-       df['Gdef']=(abs (g-df['G']))
-       df['Bdef']=(abs (r-df['B']))
-       df['SumDef']=(df['Rdef']+df['Gdef']+df['Bdef'])
-       Newdf1=df.sort_values('Rdef')
-       print(Newdf1.head(1))
-       Newdf2=df.sort_values('Gdef')
-       print(Newdf2.head(1))
-       Newdf3=df.sort_values('Bdef')
-       print(Newdf3.head(1))
-       Newdf4=df.sort_values('SumDef')
-       print(Newdf4.head(1))
-       df1=df.loc[df['color']== 'white']
-
-#cv2.namedWindow('image')
-#cv2.setMouseCallback('image', average_bgr)
-            
-'''
+              
 
 cv2.namedWindow('mouse_callback')
 

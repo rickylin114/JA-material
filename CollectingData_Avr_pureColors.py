@@ -132,6 +132,27 @@ def color_def(b,g,r,Avr):
               color='White'
               print(color)
 
+'''
+def match(b,g,r,Avr):
+    
+       df['Rdef']=(abs (r-df['R']))
+       df['Gdef']=(abs (g-df['G']))
+       df['Bdef']=(abs (r-df['B']))
+       df['SumDef']=(df['Rdef']+df['Gdef']+df['Bdef'])
+       Newdf1=df.sort_values('Rdef')
+       print(Newdf1.head(1))
+       Newdf2=df.sort_values('Gdef')
+       print(Newdf2.head(1))
+       Newdf3=df.sort_values('Bdef')
+       print(Newdf3.head(1))
+       Newdf4=df.sort_values('SumDef')
+       print(Newdf4.head(1))
+       df1=df.loc[df['color']== 'white']
+
+#cv2.namedWindow('image')
+#cv2.setMouseCallback('image', average_bgr)
+            
+'''
 
 cv2.namedWindow('mouse_callback')
 

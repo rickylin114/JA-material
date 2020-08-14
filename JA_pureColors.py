@@ -93,7 +93,7 @@ def match(BAvr,GAvr,RAvr,Avr):
 #cv2.namedWindow('image')
 #cv2.setMouseCallback('image', average_bgr)
             
-img=cv2.imread('MQ236.jpg',1)
+img=cv2.imread('104432 0.jpg',1)
 print(img.dtype)
 cv2.namedWindow('mouse_callback')
 

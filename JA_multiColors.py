@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import random
 
-df= pd.read_csv("D:/桌面/JA Material/JA-material/data base/MQdata大板.csv")
+df= pd.read_csv("D:/桌面/JA Material/JA-material/data base/MQdata.csv")
 refPt = []
 PtBGR=[]
 #n= int(input("輸入取樣點數:"))
@@ -13,11 +13,11 @@ def CircleCallback(event,x,y,flags,param):
     c=0
     global refPt,PtBGR,w,h,Serial
     if event == cv2.EVENT_LBUTTONDOWN:
-        n=1000
+        n=500
         for c in range(0,n):
             c+=1
-            ranx=(random.randint(0,999))
-            rany=(random.randint(0,999))
+            ranx=(random.randint(0,499))
+            rany=(random.randint(0,499))
             refPt.append((ranx,rany))
             b, g, r = img[ranx,rany]
             PtBGR.append((b,g,r))             
@@ -29,6 +29,7 @@ def CircleCallback(event,x,y,flags,param):
                 #print(refPt[0:c])
                 df_test = pd.DataFrame(list(zip(r,g,b)),columns=['R','G','B'])
                 loan=pd.merge(df_test,df)
+                #print (loan)
                 dups_loan = loan.pivot_table(index=['Serial no'],aggfunc='size')
                 Newdf=dups_loan.sort_values(ascending=False)
                 BAvr=(round(sum(b[0:c])/c))
@@ -44,7 +45,7 @@ def CircleCallback(event,x,y,flags,param):
 #cv2.namedWindow('image')
 #cv2.setMouseCallback('image', average_bgr)
             
-img=cv2.imread('B266.jpg',1)
+img=cv2.imread('MQ217.jpg',1)
 cv2.namedWindow('mouse_callback')
 
 # bind the callback function to window
