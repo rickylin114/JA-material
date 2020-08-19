@@ -2,14 +2,56 @@ import cv2
 import numpy as np
 import pandas as pd
 import random
-
+import tkinter as tk 
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
 
 refPt = []
 Serial=[]
 PtBGR=[]
-img=cv2.imread('MQ719.jpg',1)
-h, w = img.shape[:2]
-#n= int(input("輸入取樣點數:"))
+
+
+
+root = tk.Tk()
+root.geometry("400x200")
+
+def quitScreen():
+    messagebox.showinfo("建立多色資料庫", "點擊視窗開始建立")
+    root.destroy()
+    root2=Tk()
+    root2.destroy()
+    
+def getTextInput():
+    global result,result2
+    
+    result=text.get(1.0, tk.END+"-1c")
+    result2=text2.get(1.0, tk.END+"-1c")
+
+    
+labelmode = tk.Label(root,text = "請輸入圖片完整名稱\n ex:MQ719.jpg")
+labelmode.configure(font=("微軟正黑體", 10))
+labelmode.grid(row=0)
+text=tk.Text(root, width=20,height=1)
+text.grid(row=0,column=2)
+
+labelmode2 = tk.Label(root,text = "請輸入編號\n ex:MQ719")
+labelmode2.configure(font=("微軟正黑體", 10))
+labelmode2.grid(row=1)
+text2=tk.Text(root, width=20,height=1)
+text2.grid(row=1,column=2)
+
+btnRead=tk.Button(root, height=1, width=10, text="確定", 
+                    command=getTextInput)
+
+btnRead.grid(row=5,column=1)
+
+btnRead=tk.Button(root, height=1, width=10, text="開始", 
+                    command=quitScreen)
+
+btnRead.grid(row=5,column=2)
+
+root.mainloop()
 
 
 def CircleCallback(event,x,y,flags,param):
@@ -19,7 +61,7 @@ def CircleCallback(event,x,y,flags,param):
         n=1000
         for c in range(0,n):
             c+=1
-            N="MQ719"
+            N=result2
             ranx=(random.randint(0,999))
             rany=(random.randint(0,999))
             refPt.append((ranx,rany))
@@ -35,88 +77,28 @@ def CircleCallback(event,x,y,flags,param):
                 df = pd.DataFrame(list(zip(Serial,r,g,b)),columns=['Serial no','R','G','B'])
                 print(df)
                 #df.to_csv('D:/桌面/JA Material/JA-material/data base/MQdata大板.csv',mode='a', header=False,index=False)
+                root2=Tk()
+                root2.withdraw()
+                messagebox.showinfo("純色板建立資料庫", "成功")
                 BAvr=(round(sum(b[0:c])/c))
                 GAvr=(round(sum(g[0:c])/c))
                 RAvr=(round(sum(r[0:c])/c))
-                print((RAvr,GAvr,BAvr))
+                #print((RAvr,GAvr,BAvr))
                 Sum=BAvr+GAvr+RAvr
                 
-                '''
-                color(BAvr,GAvr,RAvr,Avr)
-                match(BAvr,GAvr,RAvr,Avr)
-                    
-def color(BAvr,GAvr,RAvr,Avr):
-        if abs(BAvr-GAvr)<=1 and abs(BAvr-RAvr)<=1:
-              print('White')
 
-        elif BAvr>=GAvr and BAvr>=RAvr:
-               if BAvr-GAvr>5 and BAvr-RAvr>=5:
-                      print('Blue')
-   
-               elif BAvr-GAvr<5:
-                      print('Cyan')
-  
-               else:
-                      print('Purple')
- 
-
-        elif GAvr>=RAvr and GAvr>=BAvr:
-               if GAvr-RAvr>5 or GAvr-BAvr>5:
-                      print('Green')
-
-               elif GAvr-RAvr<5:
-                      print('Yellow')
-
-               else:
-                      print('Cyan')
-
-        elif RAvr>=GAvr and RAvr>=BAvr:
-               if RAvr-GAvr>=5 and RAvr-BAvr>=5:
-                      print('Red')
-
-               elif RAvr-GAvr<5:
-                      print('Yellow')
-                      color.white()
-               else:
-                      print('Purple')
-
-        else:
-              print(RAvr)
-              print(BAvr)
-              print(GAvr)
-              print('White')
-
-
-def match(BAvr,GAvr,RAvr,Avr):
-    
-       df['Rdef']=(abs (RAvr-df['R']))
-       df['Gdef']=(abs (GAvr-df['G']))
-       df['Bdef']=(abs (RAvr-df['B']))
-       df['SumDef']=(df['Rdef']+df['Gdef']+df['Bdef'])
-       Newdf1=df.sort_values('Rdef')
-       print(Newdf1.head(1))
-       Newdf2=df.sort_values('Gdef')
-       print(Newdf2.head(1))
-       Newdf3=df.sort_values('Bdef')
-       print(Newdf3.head(1))
-       Newdf4=df.sort_values('SumDef')
-       print(Newdf4.head(1))
-       df1=df.loc[df['color']== 'white']
-
-#cv2.namedWindow('image')
-#cv2.setMouseCallback('image', average_bgr)
-            
-'''
 
 cv2.namedWindow('mouse_callback')
-
-# bind the callback function to window
-
 cv2.setMouseCallback('mouse_callback',CircleCallback)
  
 def main():
     while (True):
+        
+        global img
+        img=cv2.imread(result,1)
+        h, w = img.shape[:2]
         cv2.imshow('mouse_callback',img)
+        
         if cv2.waitKey(20) == 27:
             break
  

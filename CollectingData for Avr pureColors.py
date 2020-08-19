@@ -2,6 +2,10 @@ import cv2
 import numpy as np
 import pandas as pd
 import random
+import tkinter as tk 
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
 
 R=[]
 G=[]
@@ -27,9 +31,23 @@ h, w = img.shape[:2]
 color='none'
 #n= int(input("輸入取樣點數:"))
 
+class editing():
+    global value
+    root2 = Tk()
+    root2.geometry('100x100')
+    labelmode = tk.Label(root2,text = "請輸入圖片名稱:xxx.jpg")
+    labelmode.configure(font=("微軟正黑體", 10))
+    labelmode.pack()
+    entry_var1 = StringVar()
+    e1 = Entry(root2,textvariable=entry_var1)
+    e1.pack()
+    value=entry_var1.get()
+    entry_var1.trace('w', lambda :CircleCallback.value)
+    root2.mainloop()
 
 def CircleCallback(event,x,y,flags,param):
     c=0
+    print (value)
     global refPt,PtBGR,w,h,Serial,r1,r2,r3,r4,r5,r6,r7,r8,r9,add,color,A,R,G,B
     if event == cv2.EVENT_LBUTTONDOWN:
         n=100
@@ -130,12 +148,10 @@ def color_def(b,g,r,Avr):
 
         else:
               color='White'
-              print(color)
+              return color
 
 
 cv2.namedWindow('mouse_callback')
-
-# bind the callback function to window
 
 cv2.setMouseCallback('mouse_callback',CircleCallback)
  

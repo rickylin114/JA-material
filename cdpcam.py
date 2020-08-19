@@ -7,10 +7,15 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
-R=[]
-G=[]
-B=[]
-A=[]
+print("=============================================")
+print("=  熱鍵(請在攝像頭的視窗使用)：             =")
+print("=  x: 拍攝圖片                              =")
+print("=  空白鍵: 開始選取八個點                   =")
+print("=============================================")
+
+r=[]
+g=[]
+b=[]
 refPt = []
 Serial=[]
 PtBGR=[]
@@ -33,18 +38,21 @@ locate=[]
 brand=[]
 
 
-
-color='none'
 #n= int(input("輸入取樣點數:"))
 
 root = tk.Tk()
 root.geometry("600x800")
+def quitScreen():
+    messagebox.showinfo("建立純色資料庫", "點擊視窗開始建立")
+    root.destroy()
+    root2=Tk()
+    root2.destroy()
 
 def getTextInput():
-    global result,result2,result3,result4,result5,result6
+    global result2,result3,result4,result5,result6
     global result7,result8,result9,result10,result11,result12
     global result13,result14,result15,result16,result17
-    result=text.get(1.0, tk.END+"-1c")
+    #result=text.get(1.0, tk.END+"-1c")
     result2=text2.get(1.0, tk.END+"-1c")
     result3=text3.get(1.0, tk.END+"-1c")
     result4=text4.get(1.0, tk.END+"-1c")
@@ -61,14 +69,14 @@ def getTextInput():
     result15=text15.get(1.0, tk.END+"-1c")
     result16=text16.get(1.0, tk.END+"-1c")
     result17=text17.get(1.0, tk.END+"-1c")
-    print(result)
-
+    
+'''
 labelmode = tk.Label(root,text = "請輸入圖片完整名稱\n ex:104432 7.jpg")
 labelmode.configure(font=("微軟正黑體", 10))
 labelmode.grid(row=0)
 text=tk.Text(root, width=20,height=1)
 text.grid(row=0,column=1)
-
+'''
 labelmode2 = tk.Label(root,text = "請輸入編號\n ex:391532 河源7%白")
 labelmode2.configure(font=("微軟正黑體", 10))
 labelmode2.grid(row=1)
@@ -170,144 +178,142 @@ text17.grid(row=9,column=1)
 btnRead=tk.Button(root, height=1, width=10, text="確定", 
                     command=getTextInput)
 
+btnRead.grid(row=12,column=2)
+
+btnRead=tk.Button(root, height=1, width=10, text="開始", 
+                    command=quitScreen)
+
 btnRead.grid(row=12,column=3)
 
 root.mainloop()
 
+class_name = "test"
+refPt = []
+PtBGR=[]
 
+index = 1
+cap = cv2.VideoCapture(0)
+width = 800
+height = 800
+w = 1400
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+
+       
 def CircleCallback(event,x,y,flags,param):
+    n=8
     c=0
-    
-
-    global refPt,PtBGR,w,h,Serial,r1,r2,r3,r4,rate,rate2,rate3,r6,r7,r8,r9,add,add2,add3,color,A,R,G,B
-    
+    global refPt,PtBGR,w,h,Serial,r1,r2,r3,r4,rate,rate2,rate3,r6,r7,r8,r9,add,add2,add3,color,b,g,r
     if event == cv2.EVENT_LBUTTONDOWN:
-        n=100
-        for c in range(0,n):
-            c+=1
-            ranx=(random.randint(0,99))
-            rany=(random.randint(0,99))
-            refPt.append((ranx,rany))
-            b, g, r = img[ranx,rany]
-            PtBGR.append((b,g,r))
-            Avr=round((int(b)+int(g)+int(r))/3)
-            color_def(b,g,r,Avr)
-            color_name.append(color)
-            #print(PtBGR[0:n])
-            b=[x[0] for x in PtBGR]
-            g=[x[1] for x in PtBGR]
-            r=[x[2] for x in PtBGR]
-            BAvr=(round(sum(b[0:c])/c))
-            GAvr=(round(sum(g[0:c])/c))
-            RAvr=(round(sum(r[0:c])/c))
-            A.append(Avr)
-            R.append(RAvr)
-            G.append(GAvr)
-            B.append(BAvr)
-            N=result2
-            Serial.append(result2)
-            r1.append(result9)
-            r2.append(result10)
-            r3.append(result11)
-            r4.append(result14)
-            rate.append(result4)
-            rate2.append(result6)
-            rate3.append(result8)
-            r6.append(result15)
-            r7.append(result16)
-            r8.append(result17)
-            add.append(result3)
-            add2.append(result5)
-            add3.append(result7)
-            locate.append(result12)
-            brand.append(result13)
-            
-            if len(refPt)==n:
-                df = pd.DataFrame(list(zip(Serial,R,G,B,A,r1,r2,r3,locate,brand,r4,add,rate,add2,rate2,add3,rate3,r6,r7,r8,color_name))
-                                  ,columns=['Serial no','R','G','B','A','40-70比例%',
-                                            '70-120比例%','325比例%','砂粉產地','樹酯品牌','樹酯比例%','色粉1','色粉1比例%(樹酯)',
-                                            '色粉2','色粉2比例%(樹酯)','色粉3','色粉3比例%(樹酯)',
-                                            '偶聯劑%(樹酯)','促進劑%(樹酯)','固化劑%(樹酯)','顏色'])
+        cv2.circle(img,(x,y),5,(76,201,255),2)
+        refPt.append((x, y))
+        print(x,y)
+        b, g, r = img[x,y]
+        Serial.append(result2)
+        r1.append(result9)
+        r2.append(result10)
+        r3.append(result11)
+        r4.append(result14)
+        rate.append(result4)
+        rate2.append(result6)
+        rate3.append(result8)
+        r6.append(result15)
+        r7.append(result16)
+        r8.append(result17)
+        add.append(result3)
+        add2.append(result5)
+        add3.append(result7)
+        locate.append(result12)
+        brand.append(result13)
+        PtBGR.append((b,g,r))
+        b=[x[0] for x in PtBGR]
+        g=[x[1] for x in PtBGR]
+        r=[x[2] for x in PtBGR]
+        dict = {'Serial no': Serial, 'R': r, 'G':g,'B':b,'40-70比例%':r1,'70-120比例%':r2,'325比例%':r3,'砂粉產地':locate,'樹酯品牌':brand,'樹酯比例%':r4[0],
+                '色粉1':add,'色粉1比例%(樹酯)':rate,'色粉2':add2,'色粉2比例%(樹酯)':rate2,'色粉3':add3,'色粉3比例%(樹酯)':rate3,'偶聯劑%(樹酯)':r6,'促進劑%(樹酯)':r7,
+                '固化劑%(樹酯)':r8}
+        df = pd.DataFrame(dict)
+        if len(refPt)==8:
                 print(df)
-                #df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorBig.csv',index=False, mode='a', header=False,encoding="utf_8_sig")
-                '''
-                match(b,g,r,Avr)
-                df = pd.DataFrame(list(zip(Serial,r,g,b)),
-                                  columns=['Serial no','R','G','B']
-                                  '''
-                                  
-def color_def(b,g,r,Avr):
-    
-        global color
-        if abs(int(b)-int(g))<=1 and abs(int(b)-int(r))<=1:
-              color='White'
-              return color
-        
-        elif b>=g and b>=r:
-               if b-g>5 and b-r>=5:
-                      color='Blue'
-                      return color
-     
-               elif b-g<5:
-                      color='Cyan'
-                      return color
-    
-               else:
-                      color='Purple'
-                      return color
+                df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorcam.csv',index=False,header=False,encoding="utf_8_sig")
+                #df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorBig.csv',index=False, mode='a', header=False,encoding="utf_8_sig")  
+                root2=Tk()
+                root2.withdraw()
+                messagebox.showinfo("純色板建立資料庫", "成功")
+                                    
+def color(BAvr,GAvr,RAvr,Avr):
+        if abs(BAvr-GAvr)<=1 and abs(BAvr-RAvr)<=1:
+              print('White')
+
+        elif BAvr>=GAvr and BAvr>=RAvr:
+               if BAvr-GAvr>5 and BAvr-RAvr>=5:
+                      print('Blue')
    
- 
-        elif g>=r and g>=b:
-               if g-r>5 or g-b>5:
-                      color='Green'
-                      return color
+               elif BAvr-GAvr<5:
+                      print('Cyan')
   
-               elif g-r<5:
-                      color='Yellow'
-                      return color
-                      
                else:
-                      color='Cyan'
-                      return color
-  
-                      
-        elif r>=g and r>=b:
-               if r-g>=5 and r-b>=5:
-                      color='Red'
-                      return color
+                      print('Purple')
 
-               elif r-g<5:
-                      color='Yellow'
-                      return color
+        elif GAvr>=RAvr and GAvr>=BAvr:
+               if GAvr-RAvr>5 or GAvr-BAvr>5:
+                      print('Green')
+
+               elif GAvr-RAvr<5:
+                      print('Yellow')
 
                else:
-                      color='Purple'
-                      return color
- 
+                      print('Cyan')
+
+        elif RAvr>=GAvr and RAvr>=BAvr:
+               if RAvr-GAvr>=5 and RAvr-BAvr>=5:
+                      print('Red')
+
+               elif RAvr-GAvr<5:
+                      print('Yellow')
+                     
+               else:
+                      print('Purple')
 
         else:
-              color='White'
+              print(RAvr)
+              print(BAvr)
+              print(GAvr)
+              print('White')
               
-
-cv2.namedWindow('mouse_callback')
-
-# bind the callback function to window
-
-cv2.setMouseCallback('mouse_callback',CircleCallback)
- 
+while True:
+        # get a frame
+        ret, frame = cap.read()
+        # show a frame
+        #frame = frame[crop_h_start:crop_h_start+w, crop_w_start:crop_w_start+w]
+        cv2.namedWindow("capture",0)
+        cv2.resizeWindow("capture", 800, 800)
+        cv2.imshow("capture", frame)
+        input = cv2.waitKey(1) & 0xFF
+        if input == ord("x"):
+            cv2.imwrite("%s/%d.jpeg" % (class_name, index),
+                        cv2.resize(frame, (800, 800), interpolation=cv2.INTER_AREA))
+            print("%s: %d 張圖片" % (class_name, index))
+            # bind the callback function to window
+        if input == ord(' '):
+            img=cv2.imread("%s/%d.jpeg" % (class_name, index),1)
+            #print(img.dtype)
+            cv2.namedWindow('mouse_callback',0)     
+            break
+            
+            
+cv2.setMouseCallback("mouse_callback",CircleCallback)
 def main():
     while (True):
-        global img
-        
-        img=cv2.imread(result,1)
-        h, w = img.shape[:2]
-        
-        cv2.imshow('mouse_callback',img)
+        cv2.imshow("mouse_callback",img)
         if cv2.waitKey(20) == 27:
             break
- 
+        
     cv2.destroyAllWindows()
  
- 
+
 if __name__ == "__main__":
     main()
+
+cap.release()
+cv2.destroyAllWindows()

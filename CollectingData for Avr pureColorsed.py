@@ -197,39 +197,39 @@ def CircleCallback(event,x,y,flags,param):
             b=[x[0] for x in PtBGR]
             g=[x[1] for x in PtBGR]
             r=[x[2] for x in PtBGR]
-            BAvr=(round(sum(b[0:c])/c))
-            GAvr=(round(sum(g[0:c])/c))
-            RAvr=(round(sum(r[0:c])/c))
-            A.append(Avr)
-            R.append(RAvr)
-            G.append(GAvr)
-            B.append(BAvr)
-            N=result2
-            Serial.append(result2)
-            r1.append(result9)
-            r2.append(result10)
-            r3.append(result11)
-            r4.append(result14)
-            rate.append(result4)
-            rate2.append(result6)
-            rate3.append(result8)
-            r6.append(result15)
-            r7.append(result16)
-            r8.append(result17)
-            add.append(result3)
-            add2.append(result5)
-            add3.append(result7)
-            locate.append(result12)
-            brand.append(result13)
-            
             if len(refPt)==n:
+                BAvr=(round(sum(b[0:c])/c))
+                GAvr=(round(sum(g[0:c])/c))
+                RAvr=(round(sum(r[0:c])/c))
+                A.append(Avr)
+                R.append(RAvr)
+                G.append(GAvr)
+                B.append(BAvr)
+                N=result2
+                Serial.append(result2)
+                r1.append(result9)
+                r2.append(result10)
+                r3.append(result11)
+                r4.append(result14)
+                rate.append(result4)
+                rate2.append(result6)
+                rate3.append(result8)
+                r6.append(result15)
+                r7.append(result16)
+                r8.append(result17)
+                add.append(result3)
+                add2.append(result5)
+                add3.append(result7)
+                locate.append(result12)
+                brand.append(result13)
                 df = pd.DataFrame(list(zip(Serial,R,G,B,A,r1,r2,r3,locate,brand,r4,add,rate,add2,rate2,add3,rate3,r6,r7,r8,color_name))
                                   ,columns=['Serial no','R','G','B','A','40-70比例%',
                                             '70-120比例%','325比例%','砂粉產地','樹酯品牌','樹酯比例%','色粉1','色粉1比例%(樹酯)',
                                             '色粉2','色粉2比例%(樹酯)','色粉3','色粉3比例%(樹酯)',
                                             '偶聯劑%(樹酯)','促進劑%(樹酯)','固化劑%(樹酯)','顏色'])
                 print(df)
-                #df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorBig.csv',index=False, mode='a', header=False,encoding="utf_8_sig")
+                df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorAvrtest.csv',index=False, encoding="utf_8_sig")
+                #df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorAvr.csv',index=False, mode='a', header=False,encoding="utf_8_sig")
                 '''
                 match(b,g,r,Avr)
                 df = pd.DataFrame(list(zip(Serial,r,g,b)),
@@ -237,7 +237,6 @@ def CircleCallback(event,x,y,flags,param):
                                   '''
                                   
 def color_def(b,g,r,Avr):
-    
         global color
         if abs(int(b)-int(g))<=1 and abs(int(b)-int(r))<=1:
               color='White'
@@ -287,11 +286,10 @@ def color_def(b,g,r,Avr):
 
         else:
               color='White'
-              
+              return color
+
 
 cv2.namedWindow('mouse_callback')
-
-# bind the callback function to window
 
 cv2.setMouseCallback('mouse_callback',CircleCallback)
  
@@ -301,8 +299,8 @@ def main():
         
         img=cv2.imread(result,1)
         h, w = img.shape[:2]
-        
         cv2.imshow('mouse_callback',img)
+
         if cv2.waitKey(20) == 27:
             break
  

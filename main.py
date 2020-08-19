@@ -1,44 +1,116 @@
 import keyboard  # using module keyboard
-import tkinter as tk  # 使用Tkinter前需要先匯入
+import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
-def func1():
-    messagebox.showinfo("建立多色資料庫", "點擊視窗開始建立")
-    import CollectingData_multiColors as cdm
-    cdm.main()
-
-def func2():
-    messagebox.showinfo("建立純色資料庫", "點擊視窗開始建立")
-    import CollectingData_pureColors as cdp
-    cdp.main()
-
-def func3():
-    messagebox.showinfo("多色板比對資料庫", "點擊視窗開始比對")
-    import JA_multiColors as multi
-    multi.main()
-
-def func4():
-    messagebox.showinfo("純色板比對資料庫", "請選取任意八個點")
+def purecam():
+    
     import JA_pureColors as pure
     pure.main()
     
-class buttons():
-    root = tk.Tk()
-    C = Canvas(root, bg="black", height=400, width=400)
-    bg = PhotoImage("D:/桌面/JA Material/JA-material/background.jpg")
-    background_label = Label(root, image=bg)
-    background_label.place(x=0, y=0, relwidth=1, relheight=1)
-    C.pack()
+def purepic():
     
-    root.geometry('400x400')
-    root.title('玉禮配方配對app')
-    tk.Button(root, text="建立多色資料庫",font=("微軟正黑體", 10),command=lambda :func1()).place(x=200, y=140, anchor=CENTER) # 添加按钮
-    tk.Button(root, text="建立純色資料庫",font=("微軟正黑體", 10),command=lambda :func2()).place(x=200, y=180, anchor=CENTER) # 添加按钮
-    tk.Button(root, text="多色板比對資料庫",font=("微軟正黑體", 10),command=lambda :func3()).place(x=200, y=220, anchor=CENTER) # 添加按钮
-    tk.Button(root, text="純色板比對資料庫",font=("微軟正黑體", 10),command=lambda :func4()).place(x=200, y=260, anchor=CENTER) # 添加按钮
-    root.mainloop() # 创建事件循环（不必理解，照抄即可）
+    import JA_pureColors as pure
+    pure.main()
+
+def multicam():
+    
+    import JA_multiColors as multi
+    multi.main()
+
+def multipic():
+    
+    import JA_multiColors as multi
+    multi.main()
+
+def cdpcam():
+    
+    import CollectingData_pureColorsed as cdp
+    cdp.main()
+
+def cdppic():
+    
+    import CollectingData_pureColorsed as cdp
+    cdp.main()
+
+def cdmcam():
+    
+    import CollectingData_multiColors as cdm
+    cdm.main()
+
+def cdmpic():
+    
+    import CollectingData_multiColors as cdm
+    cdm.main()
+    
+def func1():
+    
+    button1.pack_forget()
+    button2.pack_forget()
+    button3.pack_forget()
+    button4.pack_forget()
+    camera=tk.Button(root, text="以照相機輸入",font=("微軟正黑體", 10),command=lambda :cdmcam()) 
+    picture=tk.Button(root, text="以圖片輸入",font=("微軟正黑體", 10),command=lambda :cdmpic()) 
+    camera.pack(ipadx=5, ipady=5, expand=True)
+    picture.pack(ipadx=5, ipady=5, expand=True)
+    
+def func2():
+    button1.pack_forget()
+    button2.pack_forget()
+    button3.pack_forget()
+    button4.pack_forget()
+    camera=tk.Button(root, text="以照相機輸入",font=("微軟正黑體", 10),command=lambda :cdpcam()) 
+    picture=tk.Button(root, text="以圖片輸入",font=("微軟正黑體", 10),command=lambda :cdppic()) 
+    camera.pack(ipadx=5, ipady=5, expand=True)
+    picture.pack(ipadx=5, ipady=5, expand=True)
+
+def func3():
+    
+    #messagebox.showinfo("多色板比對資料庫", "點擊視窗開始比對")
+    button1.pack_forget()
+    button2.pack_forget()
+    button3.pack_forget()
+    button4.pack_forget()
+    camera=tk.Button(root, text="以照相機輸入",font=("微軟正黑體", 10),command=lambda :multicam()) 
+    picture=tk.Button(root, text="以圖片輸入",font=("微軟正黑體", 10),command=lambda :multipic()) 
+    camera.pack(ipadx=5, ipady=5, expand=True)
+    picture.pack(ipadx=5, ipady=5, expand=True)
+
+def func4():
+    
+    #messagebox.showinfo("純色板比對資料庫", "請選取任意八個點")
+    button1.pack_forget()
+    button2.pack_forget()
+    button3.pack_forget()
+    button4.pack_forget()
+    camera=tk.Button(root, text="以照相機輸入",font=("微軟正黑體", 10),command=lambda :purecam()) 
+    picture=tk.Button(root, text="以圖片輸入",font=("微軟正黑體", 10),command=lambda :purepic()) 
+    camera.pack(ipadx=5, ipady=5, expand=True)
+    picture.pack(ipadx=5, ipady=5, expand=True)
+
+    
+root = tk.Tk()
+
+'''
+C = Canvas(root, bg="black", height=400, width=400)
+bg = PhotoImage("D:/桌面/JA Material/JA-material/background.jpg")
+background_label = Label(root, image=bg)
+background_label.place(x=0, y=0, relwidth=1, relheight=1)
+C.pack()
+'''
+root.geometry('400x400')
+root.title('玉禮配方配對app')
+button1=tk.Button(root, text="建立多色資料庫",font=("微軟正黑體", 10),command=lambda :func1()) 
+button2=tk.Button(root, text="建立純色資料庫",font=("微軟正黑體", 10),command=lambda :func2()) 
+button3=tk.Button(root, text="多色板比對資料庫",font=("微軟正黑體", 10),command=lambda :func3())
+button4=tk.Button(root, text="純色板比對資料庫",font=("微軟正黑體", 10),command=lambda :func4()) 
+button1.pack(ipadx=5, ipady=5, expand=True)
+button2.pack(ipadx=5, ipady=5, expand=True)
+button3.pack(ipadx=5, ipady=5, expand=True)
+button4.pack(ipadx=5, ipady=5, expand=True)
+
+root.mainloop()
 
 
     

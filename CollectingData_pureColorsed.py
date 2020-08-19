@@ -7,10 +7,9 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
-R=[]
-G=[]
-B=[]
-A=[]
+r=[]
+g=[]
+b=[]
 refPt = []
 Serial=[]
 PtBGR=[]
@@ -39,6 +38,11 @@ color='none'
 
 root = tk.Tk()
 root.geometry("600x800")
+def quitScreen():
+    messagebox.showinfo("建立純色資料庫", "點擊視窗開始建立")
+    root.destroy()
+    root2=Tk()
+    root2.destroy()
 
 def getTextInput():
     global result,result2,result3,result4,result5,result6
@@ -170,6 +174,11 @@ text17.grid(row=9,column=1)
 btnRead=tk.Button(root, height=1, width=10, text="確定", 
                     command=getTextInput)
 
+btnRead.grid(row=12,column=2)
+
+btnRead=tk.Button(root, height=1, width=10, text="開始", 
+                    command=quitScreen)
+
 btnRead.grid(row=12,column=3)
 
 root.mainloop()
@@ -178,8 +187,7 @@ root.mainloop()
 def CircleCallback(event,x,y,flags,param):
     c=0
     
-
-    global refPt,PtBGR,w,h,Serial,r1,r2,r3,r4,rate,rate2,rate3,r6,r7,r8,r9,add,add2,add3,color,A,R,G,B
+    global refPt,PtBGR,w,h,Serial,r1,r2,r3,r4,rate,rate2,rate3,r6,r7,r8,r9,add,add2,add3,color,r,g,b
     
     if event == cv2.EVENT_LBUTTONDOWN:
         n=100
@@ -190,20 +198,13 @@ def CircleCallback(event,x,y,flags,param):
             refPt.append((ranx,rany))
             b, g, r = img[ranx,rany]
             PtBGR.append((b,g,r))
+            #print(PtBGR[0:n])
             Avr=round((int(b)+int(g)+int(r))/3)
             color_def(b,g,r,Avr)
             color_name.append(color)
-            #print(PtBGR[0:n])
             b=[x[0] for x in PtBGR]
             g=[x[1] for x in PtBGR]
             r=[x[2] for x in PtBGR]
-            BAvr=(round(sum(b[0:c])/c))
-            GAvr=(round(sum(g[0:c])/c))
-            RAvr=(round(sum(r[0:c])/c))
-            A.append(Avr)
-            R.append(RAvr)
-            G.append(GAvr)
-            B.append(BAvr)
             N=result2
             Serial.append(result2)
             r1.append(result9)
@@ -223,18 +224,19 @@ def CircleCallback(event,x,y,flags,param):
             brand.append(result13)
             
             if len(refPt)==n:
-                df = pd.DataFrame(list(zip(Serial,R,G,B,A,r1,r2,r3,locate,brand,r4,add,rate,add2,rate2,add3,rate3,r6,r7,r8,color_name))
-                                  ,columns=['Serial no','R','G','B','A','40-70比例%',
+                df = pd.DataFrame(list(zip(Serial,r,g,b,r1,r2,r3,locate,brand,r4,add,rate,add2,rate2,add3,rate3,r6,r7,r8,color_name))
+                                  ,columns=['Serial no','R','G','B','40-70比例%',
                                             '70-120比例%','325比例%','砂粉產地','樹酯品牌','樹酯比例%','色粉1','色粉1比例%(樹酯)',
                                             '色粉2','色粉2比例%(樹酯)','色粉3','色粉3比例%(樹酯)',
                                             '偶聯劑%(樹酯)','促進劑%(樹酯)','固化劑%(樹酯)','顏色'])
                 print(df)
+                df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorBig.csv',index=False,header=False,encoding="utf_8_sig")
+                root2=Tk()
+                root2.withdraw()
+                messagebox.showinfo("純色板建立資料庫", "成功")
+
                 #df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorBig.csv',index=False, mode='a', header=False,encoding="utf_8_sig")
-                '''
-                match(b,g,r,Avr)
-                df = pd.DataFrame(list(zip(Serial,r,g,b)),
-                                  columns=['Serial no','R','G','B']
-                                  '''
+
                                   
 def color_def(b,g,r,Avr):
     
@@ -290,9 +292,6 @@ def color_def(b,g,r,Avr):
               
 
 cv2.namedWindow('mouse_callback')
-
-# bind the callback function to window
-
 cv2.setMouseCallback('mouse_callback',CircleCallback)
  
 def main():
@@ -301,8 +300,8 @@ def main():
         
         img=cv2.imread(result,1)
         h, w = img.shape[:2]
-        
         cv2.imshow('mouse_callback',img)
+
         if cv2.waitKey(20) == 27:
             break
  
