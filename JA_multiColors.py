@@ -45,7 +45,7 @@ def CircleCallback(event,x,y,flags,param):
 #cv2.namedWindow('image')
 #cv2.setMouseCallback('image', average_bgr)
             
-img=cv2.imread('MQ217.jpg',1)
+img=cv2.imdecode(np.fromfile(r"D:\桌面\JA Material\JA-material\multi\MQ713B.jpg",dtype=np.uint8),-1)
 cv2.namedWindow('mouse_callback')
 
 # bind the callback function to window
