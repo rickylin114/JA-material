@@ -47,7 +47,7 @@ def quitScreen():
 def getTextInput():
     global result,result2,result3,result4,result5,result6
     global result7,result8,result9,result10,result11,result12
-    global result13,result14,result15,result16,result17
+    global result13,result14,result15,result16,result17,result18
     result=text.get(1.0, tk.END+"-1c")
     result2=text2.get(1.0, tk.END+"-1c")
     result3=text3.get(1.0, tk.END+"-1c")
@@ -65,6 +65,7 @@ def getTextInput():
     result15=text15.get(1.0, tk.END+"-1c")
     result16=text16.get(1.0, tk.END+"-1c")
     result17=text17.get(1.0, tk.END+"-1c")
+    result18=text18.get(1.0, tk.END+"-1c")
     print(result)
 
 labelmode = tk.Label(root,text = "請輸入圖片完整名稱\n ex:104432 7.jpg")
@@ -186,6 +187,12 @@ text17=tk.Text(root, width=20,height=1)
 text17.insert("insert","0.53")
 text17.grid(row=9,column=1)
 
+labelmode18 = tk.Label(root,text = "輸入存取資料庫\n")
+labelmode18.configure(font=("微軟正黑體", 10))
+labelmode18.grid(row=9,column=2)
+text18=tk.Text(root, width=20,height=1)
+text18.grid(row=9,column=3)
+text18.insert("insert","PureColorBig.csv")
 
 
 btnRead=tk.Button(root, height=1, width=10, text="確定", 
@@ -247,11 +254,11 @@ def CircleCallback(event,x,y,flags,param):
                                             '色粉2','色粉2比例%(樹酯)','色粉3','色粉3比例%(樹酯)',
                                             '偶聯劑%(樹酯)','促進劑%(樹酯)','固化劑%(樹酯)','color'])
                 print(df)
-                #df.to_csv('D:/桌面/JA Material/JA-material/data base/PureColorBig.csv',index=False,encoding="utf_8_sig")
                 root2=Tk()
                 root2.withdraw()
                 messagebox.showinfo("純色板建立資料庫", "成功")
-                #df.to_csv(".data base\\PureColorBig.csv",index=False, mode='a', header=False,encoding="utf_8_sig")
+                #df.to_csv("D:\桌面\JA Material\JA-material\data base\\%s" %(result18),index=False, mode='a', header=False,encoding="utf_8_sig")
+                df.to_csv(".data base\\%s" %(result18),index=False, mode='a', header=False,encoding="utf_8_sig")
 
                                   
 def color_def(b,g,r,Avr):
@@ -313,8 +320,8 @@ cv2.setMouseCallback('mouse_callback',CircleCallback)
 def main():
     while (True):
         global img
-        img=cv2.imread(result,1)
-        #img=cv2.imread(".img\\%s" % (result),1)
+        #img=cv2.imdecode(np.fromfile(r"D:\桌面\JA Material\JA-material\pure\%s" % (result),dtype=np.uint8),-1)
+        img=cv2.imread(".pure\\%s" % (result),1)
         h, w = img.shape[:2]
         cv2.imshow('mouse_callback',img)
         if cv2.waitKey(20) == 27:

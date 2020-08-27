@@ -201,8 +201,6 @@ def CircleCallback(event,x,y,flags,param):
             refPt.append((x, y))
             b, g, r = img[x,y]
             PtBGR.append((b,g,r))
-            #print(refPt[0:n])
-            #print(PtBGR[0:n])
             b=[x[0] for x in PtBGR]
             g=[x[1] for x in PtBGR]
             r=[x[2] for x in PtBGR]
@@ -218,12 +216,11 @@ def CircleCallback(event,x,y,flags,param):
                 color_name.append(color)
                 AvrRGB={'R':RAvr,'G':GAvr,'B':BAvr,'Sum':SumRGB,'Avr':SumAvr,'color':color_name}
                 df_test = pd.DataFrame(AvrRGB,index=[0])
-                dfread = pd.read_csv("D:\桌面\JA Material\JA-material\data base\\%s" %(result2))
-                #dfread = pd.read_csv(".data base\\%s" %(result2))
+                #dfread = pd.read_csv("D:\桌面\JA Material\JA-material\data base\\%s" %(result2))
+                dfread = pd.read_csv(".data base\\%s" %(result2))
                 dfread['A']= round((dfread['R'] + dfread['G'] + dfread['B'])/3)
                 dfread['S'] = dfread['R'] + dfread['G'] + dfread['B']
                 newdf=dfread.loc[(dfread['color']==color)|(dfread['A']==SumAvr)|(dfread['S']==SumRGB)]
-                #df.sort_values("title")
                 newdf.insert(1,'Rdif',newdf[['R']].add(-RAvr))
                 newdf.insert(2,'Gdif',newdf[['G']].add(-GAvr))
                 newdf.insert(3,'Bdif',newdf[['B']].add(-BAvr))
@@ -240,12 +237,10 @@ def CircleCallback(event,x,y,flags,param):
                 df3=df.drop_duplicates('Serial no', keep='first', inplace=False).head()
                 print(df3)
 
-                #df.to_csv('D:/桌面/JA Material/JA-material/data base/testtt.csv', header=True,index=False, encoding="utf_8_sig")
                 if df3.empty ==True:
                     root=tk.Tk()
                     root.withdraw()
                     messagebox.showinfo("失敗", "未找到符合資料")
-                    #print(filtdf,Neg_filtdf)
                 else:
                     Zero=df3.loc[(df3['Rdif']==0)&(df3['Gdif']==0)&(df3['Bdif']==0)]
                     Zero=Zero.head(3)
@@ -268,7 +263,7 @@ def CircleCallback(event,x,y,flags,param):
                         filtdf=filtdf.sort_values(by=['Rdif','Gdif','Bdif']).head()
                         Neg_filtdf=df3.loc[(df3['A']<SumAvr)]
                         Neg_filtdf=Neg_filtdf.sort_values(by=['Rdif','Gdif','Bdif']).head()
-                        #print(filtdf,Neg_filtdf)
+
                         if Neg_filtdf.empty==True and filtdf.empty ==True:
                             root=tk.Tk()
                             root.withdraw()
@@ -384,8 +379,8 @@ def color_def(BAvr,GAvr,RAvr):
               color='White'
 
 
-img=cv2.imdecode(np.fromfile(r"D:\桌面\JA Material\JA-material\pure\%s" % (result),dtype=np.uint8),-1)          
-#img=cv2.imdecode(np.fromfile(r".pure\%s" % (result),dtype=np.uint8),-1)
+#img=cv2.imdecode(np.fromfile(r"D:\桌面\JA Material\JA-material\pure\%s" % (result),dtype=np.uint8),-1)          
+img=cv2.imdecode(np.fromfile(r".pure\%s" % (result),dtype=np.uint8),-1)
 cv2.namedWindow('mouse_callback')
 
 # bind the callback function to window

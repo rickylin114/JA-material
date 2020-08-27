@@ -14,7 +14,7 @@ PtBGR=[]
 
 
 root = tk.Tk()
-root.geometry("400x200")
+root.geometry("365x170")
 
 def quitScreen():
     messagebox.showinfo("建立多色資料庫", "點擊視窗開始建立")
@@ -23,16 +23,18 @@ def quitScreen():
     root2.destroy()
     
 def getTextInput():
-    global result,result2
+    global result,result2,result3
     
     result=text.get(1.0, tk.END+"-1c")
     result2=text2.get(1.0, tk.END+"-1c")
+    result3=text3.get(1.0, tk.END+"-1c")
 
     
 labelmode = tk.Label(root,text = "請輸入圖片完整名稱\n ex:MQ719.jpg")
 labelmode.configure(font=("微軟正黑體", 10))
 labelmode.grid(row=0)
 text=tk.Text(root, width=20,height=1)
+text.insert("insert",".jpg")
 text.grid(row=0,column=2)
 
 labelmode2 = tk.Label(root,text = "請輸入編號\n ex:MQ719")
@@ -40,6 +42,14 @@ labelmode2.configure(font=("微軟正黑體", 10))
 labelmode2.grid(row=1)
 text2=tk.Text(root, width=20,height=1)
 text2.grid(row=1,column=2)
+
+labelmode3 = tk.Label(root,text = "輸入存取資料庫\n")
+labelmode3.configure(font=("微軟正黑體", 10))
+labelmode3.grid(row=2)
+text3=tk.Text(root, width=20,height=1)
+text3.grid(row=2,column=2)
+text3.insert("insert","MQdata.csv")
+
 
 btnRead=tk.Button(root, height=1, width=10, text="確定", 
                     command=getTextInput)
@@ -76,7 +86,8 @@ def CircleCallback(event,x,y,flags,param):
                 #print(refPt[0:c])
                 df = pd.DataFrame(list(zip(Serial,r,g,b)),columns=['Serial no','R','G','B'])
                 print(df)
-                #df.to_csv('D:/桌面/JA Material/JA-material/data base/MQdata大板.csv',mode='a', header=False,index=False)
+                #df.to_csv("D:\桌面\JA Material\JA-material\data base\\%s" %(result3),index=False, mode='a', header=False,encoding="utf_8_sig")
+                df.to_csv(".data base\\%s" %(result3),index=False, mode='a', header=False,encoding="utf_8_sig")
                 root2=Tk()
                 root2.withdraw()
                 messagebox.showinfo("純色板建立資料庫", "成功")
@@ -93,9 +104,9 @@ cv2.setMouseCallback('mouse_callback',CircleCallback)
  
 def main():
     while (True):
-        
         global img
-        img=cv2.imread(result,1)
+        #img=cv2.imdecode(np.fromfile(r"D:\桌面\JA Material\JA-material\multi\%s" % (result),dtype=np.uint8),-1)
+        img=cv2.imdecode(np.fromfile(r".multi\%s" % (result),dtype=np.uint8),-1)
         h, w = img.shape[:2]
         cv2.imshow('mouse_callback',img)
         

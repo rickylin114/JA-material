@@ -9,7 +9,6 @@ from tkinter import messagebox
 from tkinter import Scale,Tk
 from tkinter.ttk import Notebook
 
-
 r=[]
 g=[]
 b=[]
@@ -34,52 +33,19 @@ color_name=[]
 locate=[]
 brand=[]
 
-root = tk.Tk()
-root.geometry("400x200")
-#n= int(input("輸入取樣點數:"))
+
 
 def quitScreen():
     messagebox.showinfo("collecting data", "按x 拍攝,空白鍵開始")
-    root.destroy()
-    root2=Tk()
     root2.destroy()
+    root3=Tk()
+    root3.destroy()
     
 def getTextInput():
-    global result,result2
+    global result
     result=text.get(1.0, tk.END+"-1c")
 
-labelmode = tk.Label(root,text = "請輸入讀取資料庫名稱\n ex:PureColorBig.csv")
-labelmode.configure(font=("微軟正黑體", 10))
-labelmode.grid(row=1)
-text=tk.Text(root, width=20,height=1)
-text.insert("insert","PureColorBig.csv")
-text.grid(row=1,column=2)
-
-btnRead=tk.Button(root, height=1, width=10, text="確定", 
-                    command=getTextInput)
-
-btnRead.grid(row=5,column=1)
-
-btnRead=tk.Button(root, height=1, width=10, text="開始", 
-                    command=quitScreen)
-
-btnRead.grid(row=5,column=2)
-
-root.mainloop()
-
-class_name = "test"
-refPt = []
-PtBGR=[]
-index = 1
-cap = cv2.VideoCapture(0)
-width = 800
-height = 800
-w = 1400
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-
 def Result_Print():
-
     window=Tk()
     window.title("Results")
     window.geometry("600x800")
@@ -184,6 +150,7 @@ def CircleCallback(event,x,y,flags,param):
     n=8
     global refPt,PtBGR,w,h,Serial,r1,r2,r3,r4,rate,rate2,rate3,r6,r7,r8,r9,add,add2,add3,color,b,g,r,df3,name,rate,col,row_text
     global row_df3,row_df32,row_df33,row_text2
+    cv2.imshow("mouse_callback",img)
     if event == cv2.EVENT_LBUTTONDOWN:
         cv2.circle(img,(x,y),5,(76,201,255),2)
         refPt.append((x, y))
@@ -200,6 +167,7 @@ def CircleCallback(event,x,y,flags,param):
         df = pd.DataFrame(dict)
         '''
         if len(refPt)==8:
+                cv2.destroyAllWindows()
                 BAvr=(round(sum(b[0:n])/n))
                 GAvr=(round(sum(g[0:n])/n))
                 RAvr=(round(sum(r[0:n])/n))
@@ -210,12 +178,12 @@ def CircleCallback(event,x,y,flags,param):
                 AvrRGB={'R':RAvr,'G':GAvr,'B':BAvr,'Sum':SumRGB,'Avr':SumAvr,'color':color_name}
                 df_test = pd.DataFrame(AvrRGB,index=[0])
                 print(df_test)
-                dfread = pd.read_csv("D:\桌面\JA Material\JA-material\data base\\%s" %(result))
-                #dfread = pd.read_csv(".data base\\%s" %(result2))
+                #dfread = pd.read_csv("D:\桌面\JA Material\JA-material\data base\\%s" %(result))
+                dfread = pd.read_csv(".data base\\%s" %(result))
                 dfread['A']= round((dfread['R'] + dfread['G'] + dfread['B'])/3)
                 dfread['S'] = dfread['R'] + dfread['G'] + dfread['B']
                 newdf=dfread.loc[(dfread['color']==color)|(dfread['A']==SumAvr)|(dfread['S']==SumRGB)]
-                #df.sort_values("title")
+    
                 newdf.insert(1,'Rdif',newdf[['R']].add(-RAvr))
                 newdf.insert(2,'Gdif',newdf[['G']].add(-GAvr))
                 newdf.insert(3,'Bdif',newdf[['B']].add(-BAvr))
@@ -231,7 +199,7 @@ def CircleCallback(event,x,y,flags,param):
                 df=df.sort_values(by=['color_y'],ascending=False)
                 df3=df.drop_duplicates('Serial no', keep='first', inplace=False).head()
                 print(df3)
-                #df.to_csv('D:/桌面/JA Material/JA-material/data base/testtt.csv', header=True,index=False, encoding="utf_8_sig")
+
                 if df3.empty ==True:
                     root=tk.Tk()
                     root.withdraw()
@@ -333,7 +301,35 @@ def color_def(BAvr,GAvr,RAvr):
         else:
               color='white'
               
-while True:
+def purecam_start():
+    global class_name,refPt,PtBGR,index,cap,width,height,w,root2,text,img
+    root2 = tk.Tk()
+    root2.geometry("400x200")
+    #n= int(input("輸入取樣點數:"))
+    labelmode = tk.Label(root2,text = "請輸入讀取資料庫名稱\n ex:pure_by_cam.csv")
+    labelmode.configure(font=("微軟正黑體", 10))
+    labelmode.grid(row=1)
+    text=tk.Text(root2, width=20,height=1)
+    text.insert("insert","pure_by_cam.csv")
+    text.grid(row=1,column=2)
+    btnRead=tk.Button(root2, height=1, width=10, text="確定", 
+                    command=getTextInput)
+    btnRead.grid(row=5,column=1)
+    btnRead=tk.Button(root2, height=1, width=10, text="開始", 
+                    command=quitScreen)
+    btnRead.grid(row=5,column=2)
+    root2.mainloop()
+    class_name = "test"
+    refPt = []
+    PtBGR=[]
+    index = 1
+    cap = cv2.VideoCapture(0)
+    width = 800
+    height = 800
+    w = 1400
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+    while True:
         # get a frame
         ret, frame = cap.read()
         # show a frame
@@ -342,7 +338,7 @@ while True:
         cv2.resizeWindow("capture", 800, 800)
         cv2.imshow("capture", frame)
         input = cv2.waitKey(1) & 0xFF
-        if input == ord("x"):
+        if input == ord("x") or input == ord ("X"):
             cv2.imwrite("%s/%d.jpeg" % (class_name, index),
                         cv2.resize(frame, (800, 800), interpolation=cv2.INTER_AREA))
             print("%s: %d 張圖片" % (class_name, index))
@@ -350,22 +346,21 @@ while True:
         if input == ord(' '):
             img=cv2.imread("%s/%d.jpeg" % (class_name, index),1)
             #print(img.dtype)
-            cv2.namedWindow('mouse_callback',0)     
+            cv2.namedWindow('mouse_callback',0)
             break
-            
-            
-cv2.setMouseCallback("mouse_callback",CircleCallback)
+    cv2.setMouseCallback("mouse_callback",CircleCallback)
+    
+        
+purecam_start()
+
+
+
 def main():
     while (True):
-        cv2.imshow("mouse_callback",img)
         if cv2.waitKey(20) == 27:
             break
-        
     cv2.destroyAllWindows()
  
 
 if __name__ == "__main__":
     main()
-
-cap.release()
-cv2.destroyAllWindows()
