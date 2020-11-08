@@ -36,7 +36,7 @@ brand=[]
 
 
 def quitScreen():
-    messagebox.showinfo("collecting data", "按x 拍攝,空白鍵開始")
+    messagebox.showinfo("collecting data", "按C 拍攝,空白鍵開始")
     root2.destroy()
     root3=Tk()
     root3.destroy()
@@ -47,12 +47,109 @@ def getTextInput():
 
 def Result_Print():
     window=Tk()
-    window.title("Results")
-    window.geometry("600x800")
+    window.title("分析結果")
+    window.geometry("600x900")
+    
     frame2=Frame(window)
     frame2.pack(fill="both")
-    tablayout=Notebook(frame2)
+
     
+    tablayout=Notebook(frame2)
+    tablayout2=Notebook(frame2)
+
+
+    #交叉配對
+    ntab1=Frame(tablayout2)
+    ntab1.pack(fill="both")
+    for row in range(len(name_n)):
+        for column in range(1):
+            label=Label(ntab1,width=25,height=2,text=name_n[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=column,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+    for row in range(len(name_n)):
+        for column in range(1):
+            label=Label(ntab1,width=5,height=2,text="%s" %rate_n[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=1,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+
+    for row in range(len(name_n)):
+        for column in range(1):
+            label=Label(ntab1,width=12,height=2,text="%   相似程度",bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=2,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+    tablayout2.add(ntab1,text="交叉配對結果")
+
+    ntab2=Frame(tablayout2)
+    ntab2.pack(fill="both")
+  
+    for row in range(len(ncol)):
+        for column in range(1):
+            label=Label(ntab2,width=22,height=1,text=ncol[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=0,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+
+    for row in range(len(ncol)):
+        for column in range(1):
+            label=Label(ntab2,width=22,height=1,text=row_nf3[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=1,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+            
+    tablayout2.add(ntab2,text="配方1")
+
+    ntab3=Frame(tablayout2)
+    ntab3.pack(fill="both")
+    
+    for row in range(len(ncol)):
+        for column in range(1):
+            label=Label(ntab3,width=22,height=1,text=ncol[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=0,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+
+    for row in range(len(ncol)):
+        for column in range(1):
+            label=Label(ntab3,width=22,height=1,text=row_nf32[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=1,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+            
+    tablayout2.add(ntab3,text="配方2")
+
+    ntab4=Frame(tablayout2)
+    ntab4.pack(fill="both")
+    
+    for row in range(len(ncol)):
+        for column in range(1):
+            label=Label(ntab4,width=22,height=1,text=ncol[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=0,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+
+    for row in range(len(ncol)):
+        for column in range(1):
+            label=Label(ntab4,width=22,height=1,text=row_nf33[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=1,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+            
+    tablayout2.add(ntab4,text="配方3")
+
+    ntab5=Frame(tablayout2)
+    ntab5.pack(fill="both")
+    
+    for row in range(len(ncol)):
+        for column in range(1):
+            label=Label(ntab5,width=22,height=1,text=ncol[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=0,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+
+    for row in range(len(ncol)):
+        for column in range(1):
+            label=Label(ntab5,width=22,height=1,text=row_nf3[row],bg="black",fg="white",padx=1,pady=1)
+            label.grid(row=row,column=1,sticky="nsew",padx=1,pady=1)
+            ntab1.grid_columnconfigure(column,weight=1)
+            
+    tablayout2.add(ntab5,text="最接近配方")
+
+
+
+    #顏色分類
     tab1=Frame(tablayout)
     tab1.pack(fill="both")
     for row in range(len(name)):
@@ -71,7 +168,8 @@ def Result_Print():
             label=Label(tab1,width=12,height=2,text="%   相似程度",bg="black",fg="white",padx=1,pady=1)
             label.grid(row=row,column=2,sticky="nsew",padx=1,pady=1)
             tab1.grid_columnconfigure(column,weight=1)
-    tablayout.add(tab1,text="配方分析結果")
+    tablayout.add(tab1,text="顏色分類結果")
+    
     tab2=Frame(tablayout)
     tab2.pack(fill="both")
     
@@ -139,14 +237,15 @@ def Result_Print():
             tab1.grid_columnconfigure(column,weight=1)
             
     tablayout.add(tab5,text="最接近配方")
-    
+
     tablayout.pack()
-    
+    tablayout2.pack()
     window.mainloop()
     
 
        
 def CircleCallback(event,x,y,flags,param):
+    #n=手動選取點數可改變
     n=8
     global refPt,PtBGR,w,h,Serial,r1,r2,r3,r4,rate,rate2,rate3,r6,r7,r8,r9,add,add2,add3,color,b,g,r,df3,name,rate,col,row_text
     global row_df3,row_df32,row_df33,row_text2
@@ -159,13 +258,7 @@ def CircleCallback(event,x,y,flags,param):
         b=[x[0] for x in PtBGR]
         g=[x[1] for x in PtBGR]
         r=[x[2] for x in PtBGR]
-
-        '''
-        dict = {'Serial no': Serial, 'R': r, 'G':g,'B':b,'40-70比例%':r1,'70-120比例%':r2,'325比例%':r3,'砂粉產地':locate,'樹酯品牌':brand,'樹酯比例%':r4[0],
-                '色粉1':add,'色粉1比例%(樹酯)':rate,'色粉2':add2,'色粉2比例%(樹酯)':rate2,'色粉3':add3,'色粉3比例%(樹酯)':rate3,'偶聯劑%(樹酯)':r6,'促進劑%(樹酯)':r7,
-                '固化劑%(樹酯)':r8}
-        df = pd.DataFrame(dict)
-        '''
+        #8=手動選取點數可改變改成n
         if len(refPt)==8:
                 cv2.destroyAllWindows()
                 BAvr=(round(sum(b[0:n])/n))
@@ -177,13 +270,94 @@ def CircleCallback(event,x,y,flags,param):
                 color_name.append(color)
                 AvrRGB={'R':RAvr,'G':GAvr,'B':BAvr,'Sum':SumRGB,'Avr':SumAvr,'color':color_name}
                 df_test = pd.DataFrame(AvrRGB,index=[0])
-                print(df_test)
-                #dfread = pd.read_csv("D:\桌面\JA Material\JA-material\data base\\%s" %(result))
                 dfread = pd.read_csv(".data base\\%s" %(result))
                 dfread['A']= round((dfread['R'] + dfread['G'] + dfread['B'])/3)
                 dfread['S'] = dfread['R'] + dfread['G'] + dfread['B']
+
+
+                #交叉比對法
+                nf=pd.DataFrame(list(zip(r,g,b)),columns=['R','G','B'])
+                nfread=dfread[['Serial no','R','G','B']]
+                loan=pd.merge(nf,nfread)
+                group=loan.groupby('Serial no')
+                Newnf=group.count()
+                Newnf['P']=round((Newnf['R']/Newnf['R'].sum())* 100)
+                Newnf=Newnf.sort_values(by=['R'],ascending=False)
+                Rate=Newnf['P'].tolist()
+                Newnf.columns = [' '.join(col).strip() for col in Newnf.columns.values]
+                nf2=pd.DataFrame(Newnf.to_records())
+                nf2=nf2.head(5)
+                
+                print(nf2)
+                if(len(nf2['Serial no'])==0):
+                    i=0
+                    j=0
+                    k=0
+                elif(len(nf2['Serial no'])==1):
+                    i=nf2.at[0,'Serial no']
+                    j=0
+                    k=0
+                elif(len(nf2['Serial no'])==2):
+                    i=nf2.at[0,'Serial no']
+                    j=nf2.at[1,'Serial no']
+                    k=0
+                else:
+                    i=nf2.at[0,'Serial no']
+                    j=nf2.at[1,'Serial no']
+                    k=nf2.at[2,'Serial no']
+                print(k)
+                nf3=dfread.loc[(dfread['Serial no']==i)].head(1)
+                nf4=dfread.loc[(dfread['Serial no']==j)].head(1)
+                nf5=dfread.loc[(dfread['Serial no']==k)].head(1)
+                nf3=nf3.drop(['R','G','B','color','A','S'],axis=1)
+                nf4=nf4.drop(['R','G','B','color','A','S'],axis=1)
+                nf5=nf5.drop(['R','G','B','color','A','S'],axis=1)
+                nf=pd.concat([nf3, nf4,nf5])
+                nf.to_csv(".data base\\test_result2.csv",index=False,encoding="utf_8_sig")
+                print(nf)
+                ncol=list(nf.columns)
+                if(len(nf2['Serial no'])==0):
+                    root=tk.Tk()
+                    root.withdraw()
+                    messagebox.showinfo("失敗", "未找到符合資料")
+                elif(len(nf2['Serial no'])==1):
+                    row_nf3=nf3.iloc[0].tolist()
+                    row_nf32=['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x']
+                    row_nf33=['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x']
+
+                elif(len(nf2['Serial no'])==2):
+                    row_nf3=nf3.iloc[0].tolist()
+                    row_nf32=nf4.iloc[0].tolist()
+                    row_nf33=['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x']
+                    
+                else:
+                    row_nf3=nf3.iloc[0].tolist()
+                    row_nf32=nf4.iloc[0].tolist()
+                    print(row_nf32)
+                    row_nf33=nf5.iloc[0].tolist()
+                name_n=nf['Serial no'].tolist()
+                rate_n=Rate
+
+                #顏色分類法
+                #(可以改)當需要寬鬆一點的比對，刪除下面一段的上下兩個'''
+                
+                '''
+                newdf1=dfread.loc[(dfread['color']==color)|(dfread['A']==SumAvr)]
+                newdf2=dfread.loc[(dfread['S']<=(SumRGB+2))&(dfread['S']>=(SumRGB-2))]
+                newdf=pd.concat([newdf1, newdf2])
+                '''
+
+                #(可以改)當需要嚴格一點的比對，刪除下面一段的上下兩個'''
+                '''
+                newdf=dfread.loc[(dfread['A']==SumAvr)|(dfread['S']==SumRGB)]
+                newdf=newdf.loc[(newdf['color']==color)]
+                '''
+                
+                
+                #並在下面一行的開頭加上#
                 newdf=dfread.loc[(dfread['color']==color)|(dfread['A']==SumAvr)|(dfread['S']==SumRGB)]
-    
+
+                
                 newdf.insert(1,'Rdif',newdf[['R']].add(-RAvr))
                 newdf.insert(2,'Gdif',newdf[['G']].add(-GAvr))
                 newdf.insert(3,'Bdif',newdf[['B']].add(-BAvr))
@@ -199,16 +373,19 @@ def CircleCallback(event,x,y,flags,param):
                 df=df.sort_values(by=['color_y'],ascending=False)
                 df3=df.drop_duplicates('Serial no', keep='first', inplace=False).head()
                 print(df3)
+                df3.to_csv(".data base\\test_result.csv",index=False,encoding="utf_8_sig")
 
+               
                 if df3.empty ==True:
                     root=tk.Tk()
                     root.withdraw()
                     messagebox.showinfo("失敗", "未找到符合資料")
-                    #print(filtdf,Neg_filtdf)
+           
                 elif len(df3)<=2:
                     root=tk.Tk()
                     root.withdraw()
-                    messagebox.showinfo("失敗", "未找到符合資料")
+                    messagebox.showinfo("失敗", "只找到少數資料\n 請再試一次")
+                    
                 else:
                     Zero=df3.loc[(df3['Rdif']==0)&(df3['Gdif']==0)&(df3['Bdif']==0)]
                     Zero=Zero.head(3)
@@ -231,11 +408,11 @@ def CircleCallback(event,x,y,flags,param):
                         filtdf=filtdf.sort_values(by=['Rdif','Gdif','Bdif']).head()
                         Neg_filtdf=df3.loc[(df3['A']<SumAvr)]
                         Neg_filtdf=Neg_filtdf.sort_values(by=['Rdif','Gdif','Bdif']).head()
-                        #print(filtdf,Neg_filtdf)
+                 
                         if Neg_filtdf.empty==True and filtdf.empty ==True:
                             root=tk.Tk()
                             root.withdraw()
-                            messagebox.showinfo("失敗", "未找到符合資料")
+                            messagebox.showinfo("失敗", "只找到少數資料\n 已存在test_result")
                         else:
                             filtdf=filtdf.drop(['R','G','B','dalta','Rdif','Gdif','Bdif','A','S','Adif','Sdif','color_x','color_y'],axis=1)
                             name=df3['Serial no'].tolist()
@@ -300,24 +477,34 @@ def color_def(BAvr,GAvr,RAvr):
 
         else:
               color='white'
-              
+
+
+        
+    
 def purecam_start():
     global class_name,refPt,PtBGR,index,cap,width,height,w,root2,text,img
     root2 = tk.Tk()
     root2.geometry("400x200")
-    #n= int(input("輸入取樣點數:"))
-    labelmode = tk.Label(root2,text = "請輸入讀取資料庫名稱\n ex:pure_by_cam.csv")
+    root2.configure(background='white')
+    img = PhotoImage(file="buttons/QJsmall.png")
+    panel = tk.Label(root2, image = img)
+    panel.grid(row=0,column=0,columnspan=3)
+    labelmode = tk.Label(root2,text = "請輸入讀取資料庫名稱\n ex:pure_by_cam.csv",bg="white")
     labelmode.configure(font=("微軟正黑體", 10))
     labelmode.grid(row=1)
     text=tk.Text(root2, width=20,height=1)
     text.insert("insert","pure_by_cam.csv")
-    text.grid(row=1,column=2)
-    btnRead=tk.Button(root2, height=1, width=10, text="確定", 
+    text.grid(row=1,column=1,columnspan=2)
+    text.configure(font=("微軟正黑體", 10))
+    img_confirm=PhotoImage(file="buttons/confirm.png")
+    img_start=PhotoImage(file="buttons/start.png")
+    
+    btnRead=tk.Button(root2, image=img_confirm,text=" ",relief='flat', 
                     command=getTextInput)
-    btnRead.grid(row=5,column=1)
-    btnRead=tk.Button(root2, height=1, width=10, text="開始", 
+    btnRead.grid(row=7,column=1)
+    btnRead2=tk.Button(root2, image=img_start,text=" ",relief='flat', 
                     command=quitScreen)
-    btnRead.grid(row=5,column=2)
+    btnRead2.grid(row=7,column=2)
     root2.mainloop()
     class_name = "test"
     refPt = []
@@ -330,27 +517,23 @@ def purecam_start():
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     while True:
-        # get a frame
+ 
         ret, frame = cap.read()
-        # show a frame
-        #frame = frame[crop_h_start:crop_h_start+w, crop_w_start:crop_w_start+w]
         cv2.namedWindow("capture",0)
         cv2.resizeWindow("capture", 800, 800)
         cv2.imshow("capture", frame)
         input = cv2.waitKey(1) & 0xFF
-        if input == ord("x") or input == ord ("X"):
-            cv2.imwrite("%s/%d.jpeg" % (class_name, index),
+        if input == ord("c") or input == ord ("C"):
+            cv2.imwrite(".test/%d.jpeg" % (index),
                         cv2.resize(frame, (800, 800), interpolation=cv2.INTER_AREA))
             print("%s: %d 張圖片" % (class_name, index))
-            # bind the callback function to window
+
         if input == ord(' '):
-            img=cv2.imread("%s/%d.jpeg" % (class_name, index),1)
-            #print(img.dtype)
+            img=cv2.imread(".test/%d.jpeg" % (index),1)
             cv2.namedWindow('mouse_callback',0)
-            break
-    cv2.setMouseCallback("mouse_callback",CircleCallback)
+            cv2.setMouseCallback("mouse_callback",CircleCallback)
+
     
-        
 purecam_start()
 
 

@@ -12,9 +12,9 @@ from tkinter.ttk import Notebook
 
 refPt = []
 PtBGR=[]
-#n= int(input("輸入取樣點數:"))
 root = tk.Tk()
-root.geometry("365x170")
+root.geometry("400x200")
+root.configure(background='white')
 
 def quitScreen():
     messagebox.showinfo("collecting data", "點擊視窗開始分析")
@@ -28,29 +28,38 @@ def getTextInput():
     result2=text2.get(1.0, tk.END+"-1c")
 
     
-labelmode = tk.Label(root,text = "請輸入圖片完整名稱\n ex:104432 w7.jpg")
+
+img = PhotoImage(file="buttons/QJsmall.png")
+panel = tk.Label(root, image = img)
+panel.grid(row=0,column=0,columnspan=3)
+
+labelmode = tk.Label(root,text = "請輸入圖片完整名稱\n ex:MQ 717.jpg",bg="white")
 labelmode.configure(font=("微軟正黑體", 10))
-labelmode.grid(row=0)
+labelmode.grid(row=1)
 text=tk.Text(root, width=20,height=1)
 text.insert("insert",".jpg")
-text.grid(row=0,column=2)
+text.configure(font=("微軟正黑體", 10))
+text.grid(row=1,column=2)
 
-labelmode2 = tk.Label(root,text = "請輸入讀取資料庫名稱\n ex:MQdata.csv")
+labelmode2 = tk.Label(root,text = "請輸入讀取資料庫名稱\n ex:MQdata.csv",bg="white")
 labelmode2.configure(font=("微軟正黑體", 10))
-labelmode2.grid(row=1)
+labelmode2.grid(row=2)
 text2=tk.Text(root, width=20,height=1)
 text2.insert("insert","MQdata.csv")
-text2.grid(row=1,column=2)
+text2.configure(font=("微軟正黑體", 10))
+text2.grid(row=2,column=2)
 
-btnRead=tk.Button(root, height=1, width=10, text="確定", 
+img_confirm=PhotoImage(file="buttons/confirm.png")
+img_start=PhotoImage(file="buttons/start.png")
+btnRead=tk.Button(root, image=img_confirm,text=" ",relief='flat', 
                     command=getTextInput)
 
 btnRead.grid(row=5,column=1)
 
-btnRead=tk.Button(root, height=1, width=10, text="開始", 
+btnRead2=tk.Button(root, image=img_start,text=" ",relief='flat', 
                     command=quitScreen)
 
-btnRead.grid(row=5,column=2)
+btnRead2.grid(row=5,column=2)
 
 root.mainloop()
 
@@ -107,9 +116,11 @@ def CircleCallback(event,x,y,flags,param):
     c=0
     global refPt,PtBGR,w,h,Serial,name,rate,name2,many
     if event == cv2.EVENT_LBUTTONDOWN:
+        #下面n代表取樣點數 若n越大則越精準一般不建議超過1000
         n=500
         for c in range(0,n):
             c+=1
+            #若n改變下面499改為n-1
             ranx=(random.randint(0,499))
             rany=(random.randint(0,499))
             refPt.append((ranx,rany))
@@ -120,7 +131,6 @@ def CircleCallback(event,x,y,flags,param):
             g=[x[1] for x in PtBGR]
             r=[x[2] for x in PtBGR]
             if len(refPt)==n:
-                #df = pd.read_csv("D:\桌面\JA Material\JA-material\data base\\%s" %(result2))
                 df = pd.read_csv(".data base\\%s" %(result2))
                 df_test = pd.DataFrame(list(zip(r,g,b)),columns=['R','G','B'])
                 loan=pd.merge(df_test,df)
@@ -139,11 +149,11 @@ def CircleCallback(event,x,y,flags,param):
                 Result_Print()
 
             
-#img=cv2.imdecode(np.fromfile(r"D:\桌面\JA Material\JA-material\multi\%s" % (result),dtype=np.uint8),-1)          
+        
 img=cv2.imdecode(np.fromfile(r".multi\%s" % (result),dtype=np.uint8),-1)
 cv2.namedWindow('mouse_callback')
 
-# bind the callback function to window
+
 
 cv2.setMouseCallback('mouse_callback',CircleCallback)
  

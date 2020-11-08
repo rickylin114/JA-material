@@ -12,10 +12,11 @@ Serial=[]
 PtBGR=[]
 
 root = tk.Tk()
-root.geometry("290x145")
+root.geometry("400x250")
+root.configure(background='white')
 
 def quitScreen():
-    messagebox.showinfo("建立多色資料庫", "按x 拍攝,空白鍵開始")
+    messagebox.showinfo("建立多色資料庫", "按C 拍攝,空白鍵開始")
     root.destroy()
     root2=Tk()
     root2.destroy()
@@ -25,28 +26,36 @@ def getTextInput():
     result=text.get(1.0, tk.END+"-1c")
     result2=text2.get(1.0, tk.END+"-1c")
 
-labelmode1 = tk.Label(root,text = "請輸入存取資料庫")
+img = PhotoImage(file="buttons/QJsmall.png")
+panel = tk.Label(root, image = img)
+panel.grid(row=0,column=0,columnspan=3)
+
+labelmode1 = tk.Label(root,text = "請輸入存取資料庫",bg="white")
 labelmode1.configure(font=("微軟正黑體", 10))
-labelmode1.grid(row=1,padx=5,pady=10)
-text=tk.Text(root, width=20,height=1)
-text.grid(row=1,column=1,padx=5,pady=10)
+labelmode1.grid(row=1)
+text=tk.Text(root, width=25,height=1)
+text.grid(row=1,column=1,columnspan=2)
 text.insert("insert","Muti_by_cam.csv")
+text.configure(font=("微軟正黑體", 10))
 
-labelmode2 = tk.Label(root,text = "請輸入編號\n ex:MQ719")
+labelmode2 = tk.Label(root,text = "請輸入編號\n ex:MQ719",bg="white")
 labelmode2.configure(font=("微軟正黑體", 10))
-labelmode2.grid(row=2,padx=5,pady=10)
-text2=tk.Text(root, width=20,height=1)
-text2.grid(row=2,column=1,padx=5,pady=10)
+labelmode2.grid(row=2)
+text2=tk.Text(root, width=25,height=1)
+text2.grid(row=2,column=1,columnspan=2)
+text2.configure(font=("微軟正黑體", 10))
 
-btnRead=tk.Button(root, height=1, width=10, text="確定", 
+img_confirm=PhotoImage(file="buttons/confirm.png")
+img_start=PhotoImage(file="buttons/start.png")
+btnRead=tk.Button(root, image=img_confirm,text=" ",relief='flat', 
                     command=getTextInput)
 
-btnRead.grid(row=5,column=0,padx=5)
+btnRead.grid(row=7,column=1)
 
-btnRead=tk.Button(root, height=1, width=10, text="開始", 
+btnRead2=tk.Button(root, image=img_start,text=" ",relief='flat', 
                     command=quitScreen)
 
-btnRead.grid(row=5,column=1,padx=5)
+btnRead2.grid(row=7,column=2)
 
 root.mainloop()
 
@@ -108,18 +117,15 @@ def multicam_start():
         cv2.resizeWindow("capture", 800, 800)
         cv2.imshow("capture", frame)
         input = cv2.waitKey(1) & 0xFF
-        if input == ord("x") or input == ord ("X"):
-            cv2.imwrite("%s/%d.jpeg" % (class_name, index),
+        if input == ord("c") or input == ord ("C"):
+            cv2.imwrite(".test/%d.jpeg" % (index),
                         cv2.resize(frame, (800, 800), interpolation=cv2.INTER_AREA))
             print("%s: %d 張圖片" % (class_name, index))
             # bind the callback function to window
         if input == ord(' '):
-            img=cv2.imread("%s/%d.jpeg" % (class_name, index),1)
-            #print(img.dtype)
+            img=cv2.imread(".test/%d.jpeg" % (index),1)
             cv2.namedWindow('mouse_callback',0)
-            break
-    cv2.setMouseCallback("mouse_callback",CircleCallback)
-    
+            cv2.setMouseCallback("mouse_callback",CircleCallback)
         
 multicam_start()
 

@@ -12,12 +12,14 @@ from tkinter.ttk import Notebook
 
 refPt = []
 PtBGR=[]
-#n= int(input("輸入取樣點數:"))
 root = tk.Tk()
 root.geometry("400x200")
-
+root.configure(background='white')
+img = PhotoImage(file="buttons/QJsmall.png")
+panel = tk.Label(root, image = img)
+panel.grid(row=0,column=0,columnspan=3)
 def quitScreen():
-    messagebox.showinfo("collecting data", "按x 拍攝,空白鍵開始")
+    messagebox.showinfo("collecting data", "按C 拍攝,空白鍵開始")
     root.destroy()
     root2=Tk()
     root2.destroy()
@@ -27,22 +29,23 @@ def getTextInput():
     result2=text2.get(1.0, tk.END+"-1c")
 
 
-labelmode2 = tk.Label(root,text = "請輸入讀取資料庫名稱\n ex:MQdata.csv")
+labelmode2 = tk.Label(root,text = "請輸入讀取資料庫名稱\n ex:MQdata.csv",bg="white")
 labelmode2.configure(font=("微軟正黑體", 10))
 labelmode2.grid(row=1)
 text2=tk.Text(root, width=20,height=1)
 text2.insert("insert","Muti_by_cam.csv")
 text2.grid(row=1,column=2)
+text2.configure(font=("微軟正黑體", 10))
 
-btnRead=tk.Button(root, height=1, width=10, text="確定", 
+img_confirm=PhotoImage(file="buttons/confirm.png")
+img_start=PhotoImage(file="buttons/start.png")
+    
+btnRead=tk.Button(root, image=img_confirm,text=" ",relief='flat', 
                     command=getTextInput)
-
-btnRead.grid(row=5,column=1)
-
-btnRead=tk.Button(root, height=1, width=10, text="開始", 
+btnRead.grid(row=7,column=1)
+btnRead2=tk.Button(root, image=img_start,text=" ",relief='flat', 
                     command=quitScreen)
-
-btnRead.grid(row=5,column=2)
+btnRead2.grid(row=7,column=2)
 
 root.mainloop()
 
@@ -100,20 +103,21 @@ def CircleCallback(event,x,y,flags,param):
     global refPt,PtBGR,w,h,Serial,name,rate,name2,many
     cv2.imshow("mouse_callback",img)
     if event == cv2.EVENT_LBUTTONDOWN:
+        #下面n代表取樣點數 若n越大則越精準一般不建議超過1000
         n=500
         for c in range(0,n):
             c+=1
+            #若n改變下面499改為n-1
             ranx=(random.randint(0,499))
             rany=(random.randint(0,499))
             refPt.append((ranx,rany))
             b, g, r = img[ranx,rany]
             PtBGR.append((b,g,r))             
-            #print(PtBGR[0:n])
             b=[x[0] for x in PtBGR]
             g=[x[1] for x in PtBGR]
             r=[x[2] for x in PtBGR]
             if len(refPt)==n:
-                #df = pd.read_csv("D:\桌面\JA Material\JA-material\data base\\%s" %(result2))
+                
                 df = pd.read_csv(".data base\\%s" %(result2))
                 df_test = pd.DataFrame(list(zip(r,g,b)),columns=['R','G','B'])
                 loan=pd.merge(df_test,df)
@@ -132,7 +136,7 @@ def CircleCallback(event,x,y,flags,param):
                 Result_Print()
 
             
-def purecam_start():
+def multicam_start():
     global class_name,refPt,PtBGR,index,cap,width,height,w,root2,text,img
     class_name = "test"
     refPt = []
@@ -145,28 +149,26 @@ def purecam_start():
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     while True:
-        # get a frame
+        
         ret, frame = cap.read()
-        # show a frame
-        #frame = frame[crop_h_start:crop_h_start+w, crop_w_start:crop_w_start+w]
+
         cv2.namedWindow("capture",0)
         cv2.resizeWindow("capture", 800, 800)
         cv2.imshow("capture", frame)
         input = cv2.waitKey(1) & 0xFF
-        if input == ord("x") or input == ord ("X"):
-            cv2.imwrite("%s/%d.jpeg" % (class_name, index),
+        if input == ord("c") or input == ord ("C"):
+            cv2.imwrite(".test/%d.jpeg" % (index),
                         cv2.resize(frame, (800, 800), interpolation=cv2.INTER_AREA))
             print("%s: %d 張圖片" % (class_name, index))
-            # bind the callback function to window
+      
         if input == ord(' '):
-            img=cv2.imread("%s/%d.jpeg" % (class_name, index),1)
+            img=cv2.imread(".test/%d.jpeg" % (index),1)
             cv2.namedWindow('mouse_callback',0)
-            break
-    cv2.setMouseCallback("mouse_callback",CircleCallback)
+            cv2.setMouseCallback("mouse_callback",CircleCallback)
+         
     
-        
-purecam_start()
-
+     
+multicam_start()
 
 
 def main():
